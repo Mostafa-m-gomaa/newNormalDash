@@ -1,0 +1,395 @@
+.App {
+  display: flex;
+  font-family: "Cairo", sans-serif;
+  overflow: hidden;
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgb(255, 255, 255);
+  /* border-radius: 20px; */
+  /* padding: 25px; */
+}
+.App .burger {
+  width: 30px;
+  background-color: white;
+  border-radius: 15px;
+  padding: 7px;
+  margin: 0 auto 15px;
+  display: none;
+  transition: 0.2;
+}
+
+.inside-app {
+  width: 85%;
+  height: 90vh;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: black;
+}
+.App .message {
+  position: fixed;
+  background-color: rgb(7, 101, 241);
+  padding: 15px;
+  z-index: 2000;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  border-radius: 10px;
+}
+.container {
+  width: 90%;
+  margin: auto;
+}
+::-webkit-scrollbar {
+  height: 12px;
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 1ex;
+}
+
+::-webkit-scrollbar-thumb {
+  background: skyblue;
+  border-radius: 1ex;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.spin-cont {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(2, 2, 2, 0.541);
+  z-index: 300;
+}
+
+.spinner {
+  width: 100px;
+  height: 100px;
+  background-color: #e00101;
+  margin: auto;
+
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  -webkit-animation: sk-rotateplane 1.2s infinite ease-in-out;
+  animation: sk-rotateplane 1.2s infinite ease-in-out;
+}
+
+@-webkit-keyframes sk-rotateplane {
+  0% {
+    -webkit-transform: perspective(120px);
+  }
+  50% {
+    -webkit-transform: perspective(120px) rotateY(180deg);
+  }
+  100% {
+    -webkit-transform: perspective(120px) rotateY(180deg) rotateX(180deg);
+  }
+}
+
+@keyframes sk-rotateplane {
+  0% {
+    transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+    -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+  }
+  50% {
+    transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+    -webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+  }
+  100% {
+    transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+    -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+  }
+}
+
+.success {
+  position: fixed;
+  width: 200px;
+  height: 200px;
+  right: 200px;
+  top: 200px;
+  background-color: rgb(13, 163, 223);
+  display: flex;
+  gap: 25px;
+  font-size: 40px;
+  align-items: center;
+  border-radius: 50%;
+  padding: 20px;
+}
+.success svg {
+  fill: green;
+}
+.wrong {
+  position: fixed;
+  width: 200px;
+  height: 200px;
+  right: 200px;
+  top: 200px;
+  background-color: rgb(0, 0, 0);
+  display: flex;
+  gap: 25px;
+  font-size: 40px;
+  align-items: center;
+  border-radius: 50%;
+  padding: 20px;
+  color: white;
+  z-index: 300;
+}
+.wrong svg {
+  fill: rgb(238, 6, 6);
+  font-size: 100px;
+}
+
+@media (max-width: 767px) {
+  .App {
+    flex-direction: column;
+    padding: 25px 15px;
+  }
+  .App .burger {
+    display: block;
+  }
+  .success,
+  .wrong {
+    right: 22%;
+    width: 120px;
+    height: 120px;
+    font-size: 20px;
+  }
+
+  .wrong svg,
+  .success svg {
+    font-size: 60px;
+  }
+}
+/* Style for all sections  */
+.main-sec {
+  flex: 1;
+  padding: 0 40px;
+  max-width: 100%;
+  height: 100vh;
+  overflow-y: auto;
+}
+.main-sec h2 {
+  text-align: center;
+}
+.main-sec table {
+  width: 100%;
+  overflow: auto;
+  display: block;
+}
+.main-sec table thead tr {
+  background-color: black;
+}
+.main-sec table thead td {
+  padding: 15px;
+  color: white;
+  font-weight: 600;
+  text-align: center;
+  font-size: 20px;
+  width: 100%;
+}
+.main-sec table tbody td {
+  padding: 10px;
+  font-weight: 600;
+}
+.main-sec table tbody td img {
+  width: 50px;
+  height: 50px;
+}
+.main-sec table tbody tr {
+  transition: 0.3s;
+  -webkit-transition: 0.3s;
+  -moz-transition: 0.3s;
+  -ms-transition: 0.3s;
+  -o-transition: 0.3s;
+}
+
+.main-sec table tbody tr:nth-child(odd) {
+  background-color: #f2f2f2;
+}
+.main-sec table tbody tr:hover {
+  background-color: #f2f2f2;
+}
+.main-sec table tbody .actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  gap: 5px;
+}
+.main-sec table tbody .del,
+.main-sec table tbody .edit {
+  padding: 5px;
+  color: white;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.main-sec table tbody .del {
+  background-color: red;
+}
+.main-sec table tbody .edit {
+  background-color: green;
+}
+.input-group label {
+  display: block;
+  margin: 10px;
+  font-size: 20px;
+}
+.input-group input,
+textarea {
+  display: block;
+  margin: 10px;
+  font-size: 20px;
+  padding: 8px 12px;
+  border: 1px solid black;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+}
+textarea {
+  height: 200px;
+}
+.input-group select {
+  margin: 10px;
+  padding: 6px 8px;
+  display: block;
+  font-size: 20px;
+}
+.submit {
+  display: block;
+  width: 50%;
+  margin: auto;
+  border: none;
+  border-radius: 10px;
+  padding: 20px;
+  font-size: 20px;
+  cursor: pointer;
+  color: white;
+  background-color: green;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  cursor: pointer;
+}
+.error {
+  color: red;
+}
+.popUp {
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.534);
+  z-index: 100;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  right: 0;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.popUp > div {
+  background-color: white;
+  width: 80%;
+  max-width: 800px;
+  height: 50%;
+  max-height: 50%;
+  overflow: auto;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  padding: 20px;
+}
+.popUp > div h2 {
+  margin: 60px auto;
+}
+
+.popUp > div > div .del,
+.popUp > div > div .edit {
+  width: 100%;
+  padding: 10px;
+  color: white;
+  font-weight: 700;
+  text-align: center;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  cursor: pointer;
+}
+.popUp > div > div .del {
+  background-color: red;
+}
+.popUp > div > div .edit {
+  background-color: green;
+}
+.line-3 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+.pagination {
+  display: flex;
+  width: fit-content;
+  margin: 20px auto;
+  border: 1px solid gray;
+}
+.pagination div {
+  width: 100px;
+  text-align: center;
+  padding: 10px;
+}
+.pagination .paginationBtn {
+  cursor: pointer;
+  background-color: green;
+  color: white;
+}
+.pagination .paginationBtn.off {
+  color: black;
+  cursor: not-allowed;
+  background-color: gray;
+}
+.pay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.pay button {
+  padding: 10px 30px;
+  background-color: green;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+}
