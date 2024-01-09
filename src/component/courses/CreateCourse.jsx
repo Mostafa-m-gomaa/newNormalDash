@@ -2,6 +2,21 @@ import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../App";
 import { useNavigate } from "react-router-dom";
 
+
+// JSON.stringify({
+//   title: title,
+//   description: desc,
+//   price: price,
+//   priceAfterDiscount: priceAfter,
+//   renewPrice: renewPrice,
+//   expirationTime: expirationTime,
+//   category: selectedCate,
+//   telegramChannelNames:
+//     chaneslValue.length === telegramChannels.length
+//       ? ["*"]
+//       : chaneslValue,
+// })
+
 function CreateCourse() {
   const { setOnload, route, token } = useContext(AppContext);
   const [title, setTitle] = useState("");
@@ -15,8 +30,17 @@ function CreateCourse() {
   const [expirationTime, setExpirationTime] = useState("");
   const [renewPrice, setRenewPrice] = useState("");
   const [telegramChannels, setTelegramChannels] = useState([]);
-
+  const [image, setImage] = useState(null);
   //   Get all  Categoires
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file && file.type.startsWith("image/")) {
+      setImage(file);
+    } else {
+      setImage(null);
+    }
+  };
 
   useEffect(() => {
     fetch(`${route}/education/categories`, {
@@ -49,25 +73,28 @@ function CreateCourse() {
     Array.from(chaleslArray).map(function (checkbox) {
       return chaneslValue.push(checkbox.value);
     });
+
+    e.preventDefault();
+    const formData = new FormData();
+
+    formData.append("title", title);
+    formData.append("description", desc);
+    formData.append("price", price);
+    formData.append("priceAfterDiscount", priceAfter);
+    formData.append("renewPrice", renewPrice);
+    formData.append("expirationTime", expirationTime);
+    formData.append("category", selectedCate);
+    formData.append("telegramChannelNames", chaneslValue.length === telegramChannels.length
+    ? ["*"]
+    : chaneslValue);
+    formData.append("image", image);
     fetch(`${route}/education/courses`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        // "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({
-        title: title,
-        description: desc,
-        price: price,
-        priceAfterDiscount: priceAfter,
-        renewPrice: renewPrice,
-        expirationTime: expirationTime,
-        category: selectedCate,
-        telegramChannelNames:
-          chaneslValue.length === telegramChannels.length
-            ? ["*"]
-            : chaneslValue,
-      }),
+      body: formData ,
     })
       .then((res) => res.json())
       .then((data) => {
@@ -93,6 +120,10 @@ function CreateCourse() {
             required
             onChange={(e) => setTitle(e.target.value)}
           />
+        </div>
+        <div className="input-group">
+          <label>Image:</label>
+          <input type="file" onChange={handleImageChange} name="" id="" />
         </div>
         <div className="input-group">
           <label>Description :*</label>
