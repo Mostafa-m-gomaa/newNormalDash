@@ -1,26 +1,34 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../App";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-function UpdatePackage() {
+function CreateCoursePack() {
   const { setOnload, route, token } = useContext(AppContext);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [image, setImage] = useState(null);
-const [type, setType] = useState("")
   const [err, setErr] = useState("");
   const [cousrses, setCourses] = useState([]);
-  const nav = useNavigate();
-  const id = useParams().id;
+  const [type, setType] = useState("package");
   const [priceAfterDiscount, setPriceAfterDiscount] = useState("");
   const [telegramChannels, setTelegramChannels] = useState([]);
-  const [selectedCourses, setSelectedCourses] = useState([]);
-  const [data, setdata] = useState({});
-  const [mainChannels, setMainChannels] = useState([]);
   const [expirationTime, setExpirationTime] = useState("");
   const [renewPrice, setRenewPrice] = useState("");
+  const [selectedCourses, setSelectedCourses] = useState([]);
   const [selectedTele, setSelectedTele] = useState([]);
+  const nav = useNavigate();
+  useEffect(() => {
+    fetch(`${route}/education/courses`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => setCourses(data.data));
+  }, []);
 
   const handleCheckboxChange = courseId => {
     // Check if the course is already selected
@@ -57,7 +65,6 @@ const [type, setType] = useState("")
   
   };
 
-
   useEffect(() => {
     fetch(`${route}/telegramChannel`, {
       method: "GET",
@@ -68,64 +75,36 @@ const [type, setType] = useState("")
     })
       .then((res) => res.json())
       .then((data) => setTelegramChannels(data.data));
-    fetch(`${route}/education/courses`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => setCourses(data.data));
-    fetch(`${route}/education/packages/findOne/${id}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        if (data.data) {
-          setdata(data.data);
-          setSelectedCourses(data.data.courses.map(obj => obj._id));
-          setSelectedTele(data.data.telegramChannelNames);
-          setType(data.data.type)
-     
-        }
-      });
   }, []);
+
   const handelSubmit = function (e) {
     e.preventDefault();
-    const data = new FormData();
+    const checkBoxVale = [];
+    const checkboxes = document.querySelectorAll(
+      'input[type="checkbox"][name="course"]:checked'
+    );
+    Array.from(checkboxes).map(function (checkbox) {
+      return checkBoxVale.push(checkbox.value);
+    });
+
+    const chaneslValue = [];
+    const chaleslArray = document.querySelectorAll(
+      'input[type="checkbox"][name="chanal"]:checked'
+    );
+    Array.from(chaleslArray).map(function (checkbox) {
+      return chaneslValue.push(checkbox.value);
+    });
     
 
     setOnload(true);
-   
+    const data = new FormData();
+    data.append("image", image);
+    data.append("price", price);
+    data.append("priceAfterDiscount", priceAfterDiscount);
+    data.append("description", description);
+    data.append("title", title);
+    data.append("type", "course");
 
-    if (title) {
-      data.append("title", title);
-    }
-    if (description) {
-      data.append("description", description);
-    }
-    if (price) {
-      data.append("price", price);
-    }
-    if (renewPrice) {
-      data.append("price", renewPrice);
-    }
-    if (priceAfterDiscount) {
-      data.append("priceAfterDiscount", priceAfterDiscount);
-    }
-    if (image) {
-      data.append("image", image);
-    }
-    if (expirationTime) {
-      data.append("expirationTime", expirationTime);
-    }
     if(selectedTele.length !== 0){
 
        
@@ -140,28 +119,29 @@ const [type, setType] = useState("")
       });
     }
 
-    fetch(`${route}/education/packages/${id}`, {
-      method: "PUT",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      body: data,
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data?.errors) {
-          setErr(data.errors[0].msg);
-        }
-        if (data.data) {
-          nav("/all-packages");
-        }
-        setOnload(false);
-      })
-      .catch((err) => console.log(err));
-    setOnload(false);
-  };
- 
 
+  
+      fetch(`${route}/education/packages`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: data,
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          if (data?.errors) {
+            setErr(data.errors[0].msg);
+          }
+          if (data.data) {
+            nav("/all-packages");
+          }
+          setOnload(false);
+        })
+        .catch((err) => console.log(err));
+    
+  };
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file && file.type.startsWith("image/")) {
@@ -171,19 +151,16 @@ const [type, setType] = useState("")
       event.target.value = "";
     }
   };
-
   return (
     <div className="main-sec">
-      <h2>Edit Package </h2>
-    
-
-<form onSubmit={(e) => handelSubmit(e)}>
+      <h2>Create Course Package </h2>
+      <form onSubmit={(e) => handelSubmit(e)}>
         <div className="input-group">
           <label>Title :</label>
           <input
             type="text"
             placeholder="Title"
-            
+            required
             onChange={(e) => setTitle(e.target.value)}
           />
         </div>
@@ -192,7 +169,7 @@ const [type, setType] = useState("")
           <textarea
             type="text"
             placeholder="Description"
-            
+            required
             onChange={(e) => {
               console.log(e.target.value);
               setDescription(e.target.value);
@@ -203,7 +180,7 @@ const [type, setType] = useState("")
           <label>Price :</label>
           <input
             type="number"
-            
+            required
             placeholder="Price"
             onChange={(e) => setPrice(e.target.value)}
           />
@@ -217,31 +194,12 @@ const [type, setType] = useState("")
             onChange={(e) => setPriceAfterDiscount(e.target.value)}
           />
         </div>
-       {type === "package" ?  <div className="input-group">
-          <label>ExpirationTime :</label>
-          <input
-            type="number"
-            
-            placeholder="number of day"
-            onChange={(e) => setExpirationTime(e.target.value)}
-          />
-        </div>: null}
-  {type === "package" ?  
   
-  
-  <div className="input-group">
-          <label>Renew price :</label>
-          <input
-            type="number"
-            
-            placeholder="renew price"
-            onChange={(e) => setRenewPrice(e.target.value)}
-          />
-        </div> : null}
+      
         <div className="input-group">
           <label>Image :</label>
 
-          <input type="file" onChange={handleImageChange}  />
+          <input type="file" onChange={handleImageChange} required />
         </div>
 
         <div className="input-group">
@@ -271,7 +229,7 @@ const [type, setType] = useState("")
           </label>
         </div>
       ))}
-  
+       
           </div>
         </div>
 
@@ -284,9 +242,10 @@ const [type, setType] = useState("")
               flexWrap: "wrap",
             }}
           >
- 
+       
+
 {telegramChannels.map(tele => (
-        <div key={tele._id}>
+        <div key={tele._id} >
           <label      style={{
                   display: "flex",
                   alignItems: "center",
@@ -294,9 +253,9 @@ const [type, setType] = useState("")
                 }}>
             <input
               type="checkbox"
-              value={tele._id}
+              value={tele.title}
               checked={selectedTele.includes(tele.title)}
-              onChange={() => handleCheckboxChangeTele(tele._id)}
+              onChange={() => handleCheckboxChangeTele(tele.title)}
             />
             {tele.title}
           </label>
@@ -325,4 +284,4 @@ const [type, setType] = useState("")
   );
 }
 
-export default UpdatePackage;
+export default CreateCoursePack;

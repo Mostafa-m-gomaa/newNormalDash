@@ -16,6 +16,9 @@ function EditCourse() {
   const [data, setData] = useState({});
   const [mainChannels, setMainChannels] = useState([]);
   const [telegramChannels, setTelegramChannels] = useState([]);
+  const [image, setImage] = useState(null);
+  const [cates, setCates] = useState([]);
+  const [selectedCate, setSelectedCate] = useState("");
   const checkBoxOnChange = (e, key) => {
     if (e.target.checked) {
       setTelegramChannels((prev) => [...prev, e.target.value]);
@@ -25,16 +28,18 @@ function EditCourse() {
       );
     }
   };
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file && file.type.startsWith("image/")) {
+      setImage(file);
+    } else {
+      setImage(null);
+    }
+  };
+
   useEffect(() => {
-    fetch(`${route}/telegramChannel`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => setMainChannels(data.data));
+  
     fetch(`${route}/education/courses/${id}`, {
       method: "get",
       headers: {
@@ -51,48 +56,52 @@ function EditCourse() {
       })
       .catch((err) => console.log(err));
   }, []);
-  const handelSubmit = function (e) {
-    e.preventDefault();
-    setOnload(true);
-    const chaneslValue = [];
-    const chaleslArray = document.querySelectorAll(
-      'input[type="checkbox"][name="chanal"]:checked'
-    );
-    Array.from(chaleslArray).map(function (checkbox) {
-      return chaneslValue.push(checkbox.value);
-    });
-    if (chaneslValue.includes("*")) {
-      data.telegramChannelNames = ["*"];
-    } else if (chaneslValue.length != 0) {
-      data.telegramChannelNames =
-        chaneslValue.length === 6 ? ["*"] : chaneslValue;
-    }
-    const data = { description: desc };
-    if (title) {
-      data.title = title;
-    }
-    if (price) {
-      data.price = price;
-    }
-    if (priceAfter) {
-      data.priceAfterDiscount = priceAfter;
-    }
-    if (expirationTime) {
-      data.expirationTime = expirationTime;
-    }
-    if (renewPrice) {
-      data.renewPrice = renewPrice;
-    }
-    fetch(`${route}/education/courses/${id}`, {
-      method: "PUt",
+
+
+  useEffect(() => {
+    fetch(`${route}/education/packages`, {
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
+      .then((data) => setCates(data.data));
+
+  }, []);
+
+  const handelSubmit = function (e) {
+    console.log(selectedCate)
+    e.preventDefault();
+    setOnload(true);
+    const formData = new FormData();
+    if (title) {
+      formData.append("title", title);
+    }
+    if (desc) {
+      formData.append("description", desc);
+    }
+  
+    if (image) {
+      formData.append("image", image, image.name);
+    }
+    if (selectedCate) {
+      formData.append("package", selectedCate);
+    }
+
+   
+    fetch(`${route}/education/courses/${id}`, {
+      method: "PUt",
+      headers: {
+        
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
     })
       .then((res) => res.json())
       .then((data) => {
+        console.log(data);
         if (data?.errors) {
           setErr(data.errors[0].msg);
         }
@@ -124,93 +133,24 @@ function EditCourse() {
             onChange={(e) => setDesc(e.target.value)}
           />
         </div>
-        <div className="input-group">
-          <label>Price :</label>
-          <input
-            placeholder={data?.price}
-            type="number"
-            onChange={(e) => setPrice(e.target.value)}
-          />
-        </div>
-        <div className="input-group">
-          <label>Price After Discount :</label>
-          <input
-            placeholder={data?.priceAfterDiscount}
-            type="number"
-            max={price}
-            onChange={(e) => setPriceAfter(e.target.value)}
-          />
-        </div>
-        <div className="input-group">
-          <label>ExpirationTime :</label>
-          <input
-            type="number"
-            placeholder={data?.expirationTime}
-            onChange={(e) => setExpirationTime(e.target.value)}
-          />
-        </div>
-        <div className="input-group">
-          <label>Renew price :</label>
-          <input
-            type="number"
-            required
-            placeholder={data?.renewPrice}
-            onChange={(e) => setRenewPrice(e.target.value)}
-          />
-        </div>
 
         <div className="input-group">
-          <label>Telegram chanel names :</label>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              flexWrap: "wrap",
-            }}
-          >
-            {mainChannels?.map((item, ind) => (
-              <div
-                key={item.id}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <input
-                  type="checkbox"
-                  id={item.id}
-                  value={item.title}
-                  onChange={(e) => {
-                    checkBoxOnChange(e, "telegram");
-                  }}
-                  checked={telegramChannels?.includes(item.title)}
-                  name="chanal"
-                />
-                <label htmlFor={item.id}>{item.title}</label>
-              </div>
-            ))}
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <input
-                onChange={(e) => {
-                  checkBoxOnChange(e, "telegram");
-                }}
-                checked={telegramChannels?.includes("*")}
-                id="all"
-                value="*"
-                type="checkbox"
-                name="chanal"
-              />
-              <label htmlFor="all">all</label>
-            </div>
-          </div>
+          <label>Image:</label>
+          <input type="file" onChange={handleImageChange} name="" id="" />
         </div>
+     
+        <div className="input-group">
+          <label>package :</label>
+          <select  onChange={(e) => setSelectedCate(e.target.value)}>
+            <option value="" disabled selected></option>
+
+            {cates.map((cate) => (
+              <option value={cate._id}>{cate.title}</option>
+            ))}
+          </select>
+        </div>
+
+        
         {err && <p className="error">{err}</p>}
 
         <button type="submit" className="submit">

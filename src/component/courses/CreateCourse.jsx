@@ -43,7 +43,7 @@ function CreateCourse() {
   };
 
   useEffect(() => {
-    fetch(`${route}/education/categories`, {
+    fetch(`${route}/education/packages`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -66,27 +66,13 @@ function CreateCourse() {
   const handelSubmit = function (e) {
     e.preventDefault();
     setOnload(true);
-    const chaneslValue = [];
-    const chaleslArray = document.querySelectorAll(
-      'input[type="checkbox"][name="chanal"]:checked'
-    );
-    Array.from(chaleslArray).map(function (checkbox) {
-      return chaneslValue.push(checkbox.value);
-    });
 
     e.preventDefault();
     const formData = new FormData();
 
     formData.append("title", title);
     formData.append("description", desc);
-    formData.append("price", price);
-    formData.append("priceAfterDiscount", priceAfter);
-    formData.append("renewPrice", renewPrice);
-    formData.append("expirationTime", expirationTime);
-    formData.append("category", selectedCate);
-    formData.append("telegramChannelNames", chaneslValue.length === telegramChannels.length
-    ? ["*"]
-    : chaneslValue);
+    formData.append("package", selectedCate);
     formData.append("image", image);
     fetch(`${route}/education/courses`, {
       method: "POST",
@@ -134,7 +120,7 @@ function CreateCourse() {
             onChange={(e) => setDesc(e.target.value)}
           />
         </div>
-        <div className="input-group">
+        {/* <div className="input-group">
           <label>Price :*</label>
           <input
             placeholder="Price"
@@ -143,35 +129,9 @@ function CreateCourse() {
             onChange={(e) => setPrice(e.target.value)}
           />
         </div>
-        <div className="input-group">
-          <label>Price After Discount :*</label>
-          <input
-            placeholder="Price After Discount"
-            type="number"
-            required
-            max={price}
-            onChange={(e) => setPriceAfter(e.target.value)}
-          />
-        </div>
-        <div className="input-group">
-          <label>ExpirationTime :</label>
-          <input
-            type="number"
-            required
-            placeholder="number of day"
-            onChange={(e) => setExpirationTime(e.target.value)}
-          />
-        </div>
-        <div className="input-group">
-          <label>Renew price :</label>
-          <input
-            type="number"
-            required
-            placeholder="renew price"
-            onChange={(e) => setRenewPrice(e.target.value)}
-          />
-        </div>
-        <div className="input-group">
+      */}
+  
+        {/* <div className="input-group">
           <label>Telegram chanel names :</label>
           <div
             style={{
@@ -208,9 +168,9 @@ function CreateCourse() {
               <label htmlFor="all">all</label>
             </div>
           </div>
-        </div>
+        </div> */}
         <div className="input-group">
-          <label>Category :</label>
+          <label>package :</label>
           <select required onChange={(e) => setSelectedCate(e.target.value)}>
             <option value="" disabled selected></option>
 

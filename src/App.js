@@ -76,6 +76,8 @@ import EditBroker from "./component/broker/EditBroker";
 import EditQuestion from "./component/questions/EditQuestion";
 import CreateQuestion from "./component/questions/CreateQuestion";
 import AllQuestions from "./component/questions/AllQuestions";
+import CreateCoursePack from "./component/packages/CoursePack";
+import AllPachages from "./component/packages/AllPackages";
 
 export const AppContext = createContext();
 
@@ -233,8 +235,9 @@ function App() {
             <Route path="/add-live" element={<CreateLive />} />
             <Route path="/edit-live/:id" element={<EditLive />} />
             <Route path="/add-message/:id" element={<AddMessage />} />
-            <Route path="/all-packages" element={<AllPackages />} />
+            <Route path="/all-packages" element={<AllPachages />} />
             <Route path="/add-package" element={<CreatePackage />} />
+            <Route path="/add-course-package" element={<CreateCoursePack />} />
             <Route path="/edit-package/:id" element={<UpdatePackage />} />
             <Route path="/edit-live/:id" element={<EditLive />} />
             <Route

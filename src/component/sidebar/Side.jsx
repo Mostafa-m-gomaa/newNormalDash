@@ -87,6 +87,9 @@ const Side = () => {
         <NavLink onClick={linkClick} to="/add-package">
           add packages
         </NavLink>
+        <NavLink onClick={linkClick} to="/add-course-package">
+          add course packages
+        </NavLink>
         <NavLink onClick={linkClick} to="/add-userPackage">
           Add User To Package
         </NavLink>

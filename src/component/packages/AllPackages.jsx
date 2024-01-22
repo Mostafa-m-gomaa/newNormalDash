@@ -32,7 +32,7 @@ function AllPachages() {
   useEffect(() => {
     setOnload(true);
 
-    fetch(`${route}/education/packages?page=${currentPage}`, {
+    fetch(`${route}/education/packages/dashboard?page=${currentPage}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -43,7 +43,7 @@ function AllPachages() {
       .then((data) => {
         setPackage(data.data);
         setPagesNumber(data.paginationResult.numberOfPages);
-
+        console.log(data);
         setOnload(false);
       });
   }, [refresh, currentPage]);
@@ -72,20 +72,20 @@ function AllPachages() {
         </div>
       )}
 
-      <h2>All Lives</h2>
+      <h2>All Packages</h2>
       <table>
         <thead>
           <tr>
             <td>Title</td>
-            <td>Description</td>
-            <td>telegramChannels</td>
-            <td>Courses</td>
-            <td>Expiration Time</td>
-            <td>Users</td>
-            <td>Image</td>
+            <td>Type</td>
             <td>Price</td>
             <td>Renew Price</td>
+            <td>Expiration Time</td>
             <td>Sold</td>
+            {/* <td>telegramChannels</td> */}
+            {/* <td>Courses</td> */}
+            {/* <td>Users</td> */}
+            <td>Image</td>
             <td>actions</td>
           </tr>
         </thead>
@@ -93,15 +93,20 @@ function AllPachages() {
           {packages?.map((packagee) => (
             <tr key={packagee._id}>
               <td>{packagee.title}</td>
-              <td>{packagee.description}</td>
-              <td>
+              <td>{packagee.type}</td>
+              <td>{packagee.price}</td>
+              <td>{packagee.renewPrice ? packagee.renewPrice : "none"}</td>
+              <td>{packagee.expirationTime ? packagee.expirationTime : "none"}</td>
+              <td>{packagee.sold}</td>
+              {/* <td>
                 {packagee.telegramChannelNames[0] === "*"
                   ? "All channels "
                   : packagee.telegramChannelNames.join(",")}
-              </td>
-              <td>{packagee.courses.map((e) => e.title).join(", ")}</td>
-              <td>{packagee.expirationTime}</td>
-              <td>{packagee.users.length}</td>
+              </td> */}
+                    
+              {/* <td>{packagee.courses.map((e) => e.title).join(", ")}</td> */}
+              
+              {/* <td>{packagee.users.length}</td> */}
               <td>
                 <img
                   src={packagee.image}
@@ -109,9 +114,9 @@ function AllPachages() {
                   alt=""
                 />
               </td>
-              <td>{packagee.price}</td>
-              <td>{packagee.renewPrice}</td>
-              <td>{packagee.sold}</td>
+             
+             
+      
 
               <td className="actions">
                 <div

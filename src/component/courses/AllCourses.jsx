@@ -62,6 +62,7 @@ function AllCourses() {
     })
       .then((res) => res.json())
       .then((data) => {
+        console.log(data.data);
         setCourses(data.data);
         setPagesNumber(data.paginationResult.numberOfPages);
         setOnload(false);
@@ -130,14 +131,7 @@ function AllCourses() {
         <thead>
           <tr>
             <td>Title</td>
-            <td>Order</td>
-            <td>Category</td>
-            <td>Expiration Time</td>
-            <td>Price</td>
-            <td>Renew Price</td>
-
-            <td>Instructor</td>
-            <td>students</td>
+            <td>Package</td>
             <td>actions</td>
           </tr>
         </thead>
@@ -145,20 +139,14 @@ function AllCourses() {
           {courses?.map((course) => (
             <tr key={course._id}>
               <td>{course.title}</td>
-              <td>{course.orderNumber}</td>
-              <td>{course.category.title}</td>
-              <td>{course.expirationTime}</td>
-              <td>
-                {course.priceAfterDiscount
-                  ? course.priceAfterDiscount
-                  : course.price}
-                $
-              </td>
-              <td>{course.renewPrice}$</td>
+              <td>{course.package.title}</td>
+          
+    
+            
+        
+         
 
-              <td>{course?.instructor?.name}</td>
-
-              <td>{course?.users?.length}</td>
+          
               <td className="actions">
                 <div
                   className="del"
@@ -169,14 +157,7 @@ function AllCourses() {
                 >
                   Delete
                 </div>
-                <div
-                  className="edit"
-                  onClick={() => {
-                    setUpdateId(course._id);
-                  }}
-                >
-                  Update
-                </div>
+            
                 <Link to={`/edit-course/${course._id}`} className="edit">
                   Edit
                 </Link>

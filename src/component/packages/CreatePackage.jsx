@@ -10,7 +10,13 @@ function CreatePackage() {
   const [image, setImage] = useState(null);
   const [err, setErr] = useState("");
   const [cousrses, setCourses] = useState([]);
+  const [type, setType] = useState("package");
   const [priceAfterDiscount, setPriceAfterDiscount] = useState("");
+  const [telegramChannels, setTelegramChannels] = useState([]);
+  const [expirationTime, setExpirationTime] = useState("");
+  const [renewPrice, setRenewPrice] = useState("");
+  const [selectedCourses, setSelectedCourses] = useState([]);
+  const [selectedTele, setSelectedTele] = useState([]);
   const nav = useNavigate();
   useEffect(() => {
     fetch(`${route}/education/courses`, {
@@ -24,6 +30,53 @@ function CreatePackage() {
       .then((data) => setCourses(data.data));
   }, []);
 
+  const handleCheckboxChange = courseId => {
+    // Check if the course is already selected
+    const isSelected = selectedCourses.includes(courseId);
+
+    // Update the selected courses based on the checkbox change
+    setSelectedCourses(prevSelected => {
+      if (isSelected) {
+        // Remove the course if already selected
+        return prevSelected.filter(id => id !== courseId);
+      } else {
+        // Add the course if not selected
+        return [...prevSelected, courseId];
+      }
+    });
+
+
+  };
+  const handleCheckboxChangeTele = teleId => {
+    // Check if the course is already selected
+    const isSelected = selectedTele.includes(teleId);
+
+    // Update the selected courses based on the checkbox change
+    setSelectedTele(prevSelected => {
+      if (isSelected) {
+        // Remove the course if already selected
+        return prevSelected.filter(id => id !== teleId);
+      } else {
+        // Add the course if not selected
+        return [...prevSelected, teleId];
+      }
+    });
+
+  
+  };
+
+  useEffect(() => {
+    fetch(`${route}/telegramChannel`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => setTelegramChannels(data.data));
+  }, []);
+
   const handelSubmit = function (e) {
     e.preventDefault();
     const checkBoxVale = [];
@@ -34,6 +87,15 @@ function CreatePackage() {
       return checkBoxVale.push(checkbox.value);
     });
 
+    const chaneslValue = [];
+    const chaleslArray = document.querySelectorAll(
+      'input[type="checkbox"][name="chanal"]:checked'
+    );
+    Array.from(chaleslArray).map(function (checkbox) {
+      return chaneslValue.push(checkbox.value);
+    });
+    
+
     setOnload(true);
     const data = new FormData();
     data.append("image", image);
@@ -41,9 +103,25 @@ function CreatePackage() {
     data.append("priceAfterDiscount", priceAfterDiscount);
     data.append("description", description);
     data.append("title", title);
-    data.append("courses", checkBoxVale);
+    data.append("type", "package");
+    data.append("renewPrice", renewPrice);
+    data.append("expirationTime", expirationTime);
+    if(selectedTele.length !== 0){
 
-    if (checkBoxVale.length != 0) {
+       
+      selectedTele.forEach(courseId => {
+        data.append("telegramChannelNames", courseId);
+      });
+    }
+    if(selectedCourses.length !== 0){
+     
+      selectedCourses.forEach(courseId => {
+        data.append('courses', courseId);
+      });
+    }
+
+
+  
       fetch(`${route}/education/packages`, {
         method: "POST",
         headers: {
@@ -63,10 +141,7 @@ function CreatePackage() {
           setOnload(false);
         })
         .catch((err) => console.log(err));
-    } else {
-      setOnload(false);
-      setErr("You Must Chose Course");
-    }
+    
   };
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -121,6 +196,24 @@ function CreatePackage() {
           />
         </div>
         <div className="input-group">
+          <label>ExpirationTime :</label>
+          <input
+            type="number"
+            required
+            placeholder="number of day"
+            onChange={(e) => setExpirationTime(e.target.value)}
+          />
+        </div>
+        <div className="input-group">
+          <label>Renew price :</label>
+          <input
+            type="number"
+            required
+            placeholder="renew price"
+            onChange={(e) => setRenewPrice(e.target.value)}
+          />
+        </div>
+        <div className="input-group">
           <label>Image :</label>
 
           <input type="file" onChange={handleImageChange} required />
@@ -135,24 +228,65 @@ function CreatePackage() {
               flexWrap: "wrap",
             }}
           >
-            {cousrses?.map((course) => (
-              <div
-                key={course._id}
-                style={{
+
+{cousrses.map(course => (
+        <div key={course._id}>
+          <label      style={{
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                }}
-              >
-                <input
-                  type="checkbox"
-                  id={course._id}
-                  value={course._id}
-                  name="course"
-                />
-                <label htmlFor={course._id}>{course.title}</label>
-              </div>
-            ))}
+                }}>
+            <input
+              type="checkbox"
+              value={course._id}
+              checked={selectedCourses.includes(course._id)}
+              onChange={() => handleCheckboxChange(course._id)}
+            />
+            {course.title}
+          </label>
+        </div>
+      ))}
+  
+          </div>
+        </div>
+
+        <div className="input-group">
+          <label>Telegram chanel names :</label>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              flexWrap: "wrap",
+            }}
+          >
+ 
+{telegramChannels.map(tele => (
+        <div key={tele._id}>
+          <label      style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}>
+            <input
+              type="checkbox"
+              value={tele.title}
+              checked={selectedTele.includes(tele.title)}
+              onChange={() => handleCheckboxChangeTele(tele.title)}
+            />
+            {tele.title}
+          </label>
+        </div>
+      ))}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <input type="checkbox" id="all" value="all" name="chanal" />
+              <label htmlFor="all">all</label>
+            </div>
           </div>
         </div>
 
