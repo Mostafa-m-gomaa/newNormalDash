@@ -51,12 +51,12 @@ const Side = () => {
         <NavLink onClick={linkClick} to="/create-broker">
           create broker
         </NavLink>
-        <NavLink onClick={linkClick} to="/all-category">
+        {/* <NavLink onClick={linkClick} to="/all-category">
           all categories
         </NavLink>
         <NavLink onClick={linkClick} to="/add-category">
           create categories
-        </NavLink>
+        </NavLink> */}
         <NavLink onClick={linkClick} to="/telegramChannels">
           All telegram channels
         </NavLink>

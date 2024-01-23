@@ -131,7 +131,7 @@ function AllCourses() {
         <thead>
           <tr>
             <td>Title</td>
-            <td>Package</td>
+            {/* <td>Package</td> */}
             <td>actions</td>
           </tr>
         </thead>
@@ -139,7 +139,7 @@ function AllCourses() {
           {courses?.map((course) => (
             <tr key={course._id}>
               <td>{course.title}</td>
-              <td>{course.package.title}</td>
+              {/* <td>{course.package.title ? course.package.title: "null"}</td> */}
           
     
             
