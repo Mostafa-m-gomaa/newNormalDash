@@ -294,9 +294,9 @@ const [type, setType] = useState("")
                 }}>
             <input
               type="checkbox"
-              value={tele._id}
+              value={tele.title}
               checked={selectedTele.includes(tele.title)}
-              onChange={() => handleCheckboxChangeTele(tele._id)}
+              onChange={() => handleCheckboxChangeTele(tele.title)}
             />
             {tele.title}
           </label>

@@ -79,6 +79,7 @@ function CreatePackage() {
 
   const handelSubmit = function (e) {
     e.preventDefault();
+    console.log(selectedTele);
     const checkBoxVale = [];
     const checkboxes = document.querySelectorAll(
       'input[type="checkbox"][name="course"]:checked'

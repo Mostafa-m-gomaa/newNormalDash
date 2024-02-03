@@ -43,6 +43,9 @@ const Side = () => {
         <NavLink onClick={linkClick} to="/all-posts">
           All Posts
         </NavLink>
+        {/* <NavLink onClick={linkClick} to="/numbers">
+          Numbers
+        </NavLink> */}
 
         <h2>Education</h2>
         <NavLink onClick={linkClick} to="/all-brokers">
@@ -166,12 +169,12 @@ const Side = () => {
         <NavLink onClick={linkClick} to="/add-question">
           add question
         </NavLink>
-        <NavLink onClick={linkClick} to="/all-landing">
+        {/* <NavLink onClick={linkClick} to="/all-landing">
           all landing
-        </NavLink>
-        <NavLink onClick={linkClick} to="/add-landing">
+        </NavLink> */}
+        {/* <NavLink onClick={linkClick} to="/add-landing">
           add landing
-        </NavLink>
+        </NavLink> */}
         <NavLink onClick={linkClick} to="/all-stories">
           all stories
         </NavLink>

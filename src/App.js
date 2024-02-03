@@ -78,6 +78,7 @@ import CreateQuestion from "./component/questions/CreateQuestion";
 import AllQuestions from "./component/questions/AllQuestions";
 import CreateCoursePack from "./component/packages/CoursePack";
 import AllPachages from "./component/packages/AllPackages";
+import Numbers from "./component/broker/numbers";
 
 export const AppContext = createContext();
 
@@ -102,7 +103,7 @@ function App() {
   const [showMessage, setShowMessage] = useState(false);
   const [message, setMessage] = useState("hello");
   const [route, setRoute] = useState(
-    "https://apiTest.wealthmakers-fx.com/api/v1/"
+    "https://api.thenewnormal.trade/api/v1/"
   );
 
   const displayMessage = (msg) => {
@@ -202,6 +203,7 @@ function App() {
             />
             <Route path="/edit-user/:id" element={<EditUser />} />
             <Route path="/all-brokers" element={<AllBrokers />} />
+            <Route path="/numbers" element={<Numbers/>} />
             <Route path="/create-broker" element={<CreateBroker />} />
             <Route path="/edit-broker/:id" element={<EditBroker />} />
             <Route path="/all-instructors" element={<Instructors />} />
