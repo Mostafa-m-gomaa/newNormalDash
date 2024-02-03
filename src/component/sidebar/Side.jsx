@@ -40,9 +40,9 @@ const Side = () => {
         <NavLink onClick={linkClick} to="/add-users">
           create user / instructor
         </NavLink>
-        <NavLink onClick={linkClick} to="/all-posts">
+        {/* <NavLink onClick={linkClick} to="/all-posts">
           All Posts
-        </NavLink>
+        </NavLink> */}
         {/* <NavLink onClick={linkClick} to="/numbers">
           Numbers
         </NavLink> */}
