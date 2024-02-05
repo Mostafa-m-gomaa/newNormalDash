@@ -31,6 +31,7 @@ function CreateCourse() {
   const [renewPrice, setRenewPrice] = useState("");
   const [telegramChannels, setTelegramChannels] = useState([]);
   const [image, setImage] = useState(null);
+  const [brok,setBrok]=useState(0)
   //   Get all  Categoires
 
   const handleImageChange = (event) => {
@@ -74,6 +75,7 @@ function CreateCourse() {
     formData.append("description", desc);
     formData.append("package", selectedCate);
     formData.append("image", image);
+    formData.append("showBroker",brok);
     fetch(`${route}/education/courses`, {
       method: "POST",
       headers: {
@@ -119,6 +121,14 @@ function CreateCourse() {
             required
             onChange={(e) => setDesc(e.target.value)}
           />
+        </div>
+        <div className="input-group">
+          <label htmlFor=""> show broker !</label>
+    <select name="" id="" onChange={(e)=>setBrok(e.target.value)}>
+      
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </select>
         </div>
         {/* <div className="input-group">
           <label>Price :*</label>

@@ -14,6 +14,19 @@ function CreateBroker() {
   const nav = useNavigate();
   const [marketers, setMarketers] = useState([]);
   const [marketer, setMarketer] = useState("");
+  const [selectedCountries, setSelectedCountries] = useState([]);
+
+  const addCountry = (country) => {
+    if (!selectedCountries.includes(country)) {
+      setSelectedCountries((prevSelected) => [...prevSelected, country]);
+    }
+  };
+
+  const removeCountry = (country) => {
+    setSelectedCountries((prevSelected) =>
+      prevSelected.filter((selected) => selected !== country)
+    );
+  };
   useEffect(() => {
     fetch(`${route}/users/getMarketers`, {
       method: "GET",
@@ -32,13 +45,25 @@ function CreateBroker() {
   const handelSubmit = function (e) {
     e.preventDefault();
     setOnload(true);
+
+   const obj ={
+      country : selectedCountries,
+      title,
+      link,
+      videoLinks,
+   }
+   if(marketer){
+      obj.marketer = marketer
+   }
+    
+
     fetch(`${route}/broker`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ country, title, link, videoLinks, marketer }),
+      body: JSON.stringify(obj),
     })
       .then((res) => res.json())
       .then((data) => {
@@ -137,7 +162,7 @@ function CreateBroker() {
 
         <div className="input-group">
           <label>Country : </label>
-          <select required onChange={(e) => setCountry(e.target.value)}>
+          <select required  onChange={(e) => addCountry(e.target.value)}>
             <option value="" disabled selected>
               Country
             </option>
@@ -145,7 +170,17 @@ function CreateBroker() {
               <option value={item.value}>{item.value}</option>
             ))}
           </select>
+
         </div>
+        <h2>Selected Countries:</h2>
+      <ul>
+        {selectedCountries.map((country) => (
+          <li key={country}>
+            {country}{' '}
+            <button onClick={() => removeCountry(country)}>Remove</button>
+          </li>
+        ))}
+      </ul>
 
         <div className="input-group">
           <label>Marketer : </label>

@@ -175,12 +175,12 @@ const Side = () => {
         {/* <NavLink onClick={linkClick} to="/add-landing">
           add landing
         </NavLink> */}
-        <NavLink onClick={linkClick} to="/all-stories">
+        {/* <NavLink onClick={linkClick} to="/all-stories">
           all stories
         </NavLink>
         <NavLink onClick={linkClick} to="/add-story">
           add story
-        </NavLink>
+        </NavLink> */}
         <h2>Marketing </h2>
         <NavLink onClick={linkClick} to="/createInvoiceForAllUsers">
           Create Invoice For All Users
