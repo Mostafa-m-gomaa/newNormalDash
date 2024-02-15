@@ -102,9 +102,13 @@ function App() {
   const [showError, setShowError] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const [message, setMessage] = useState("hello");
+  // const [route, setRoute] = useState(
+  //   "https://api.thenewnormal.trade/api/v1/"
+  // );
   const [route, setRoute] = useState(
-    "https://api.thenewnormal.trade/api/v1/"
+    "https://apiTest.wealthmakers-fx.com/api/v1/"
   );
+  
 
   const displayMessage = (msg) => {
     setMessage(msg);
