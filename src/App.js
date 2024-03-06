@@ -106,7 +106,7 @@ function App() {
   //   "https://api.thenewnormal.trade/api/v1/"
   // );
   const [route, setRoute] = useState(
-    "https://apiTest.wealthmakers-fx.com/api/v1/"
+    "https://api.thenewnormal.trade/api/v1/"
   );
   
 

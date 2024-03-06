@@ -20,7 +20,7 @@ function AllMarketingRequests() {
     fetch(`${route}/withdrawReq?page=${currentPage}`, {
       method: "GET",
       headers: {
-        "Content-Type": "application/json",
+       
         Authorization: `Bearer ${token}`,
       },
     })
