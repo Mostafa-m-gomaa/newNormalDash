@@ -38,23 +38,24 @@ const MarketLog = () => {
           الدور : <span>{marketData?.role}</span>
         </h4>{" "}
         <h4>
-          إجمالي المبيعات : <span>${marketData?.totalSalesMoney}</span>
+        اجمالي المبيعات فوق 500 <span>${marketData?.totalSalesMoneyGT500}</span>
         </h4>{" "}
         <h4>
-          عدد المبيعات: <span>{marketData?.mySales}</span>
+        اجمالي مبيعات تحت 500 <span>{marketData?.totalSalesMoneyLT500}</span>
         </h4>{" "}
         <h4>
-          المبيعات المكتسبة : <span>{marketData?.customerSales}</span>
+        نسبة الربح فوق 500 : <span>{marketData?.percentageGT500}</span>
         </h4>{" "}
         <h4>
-          الارباح من العملاء: <span>${marketData?.customers_profits}</span>
+        نسبة الربح تحت 500: <span>${marketData?.percentageLT500}</span>
         </h4>{" "}
         <h4>
-          النسبه: <span>%{marketData?.percentage}</span>
+        اجمالي الربح فوق 500: <span>%{marketData?.profitsGT500}</span>
         </h4>
         <h4>
-          الربح: <span>${marketData?.profits}</span>
+        اجمالي الربح تحت 500: <span>${marketData?.profitsLT500}</span>
         </h4>
+      
       </div>
 
       {marketData?.invitor?._id && (
@@ -71,24 +72,36 @@ const MarketLog = () => {
           <InvoicesTable data={marketData?.invoices} />
         )}
       </div>
-      <div className="space-y-4">
+      {/* <div className="space-y-4">
         <h2 className="font-semibold text-center text-xl">المبيعات المباشرة</h2>
         {marketData?.direct_transactions?.length === 0 ? (
           <p className="my-10 font-semibold text-center">لا يوجد مبيعات هنا</p>
         ) : (
           <SalesTable data={marketData?.direct_transactions} />
         )}
+      </div> */}
+      <div className="space-y-4">
+        <h2 className="font-semibold text-center text-xl">
+        ارباح من الفريق اعلي من 500{" "}
+        </h2>
+        {marketData?.transactionsGT500?.length === 0 ? (
+          <p className="my-10 font-semibold text-center">لا يوجد ارباح هنا</p>
+        ) : (
+          <SalesTable data={marketData?.transactionsGT500} haveGeneration={true} />
+        )}
       </div>
       <div className="space-y-4">
         <h2 className="font-semibold text-center text-xl">
-          الارباح من الفريق{" "}
+       ارباح من الفريق اقل من 500{" "}
         </h2>
-        {marketData?.transactions?.length === 0 ? (
+        {marketData?.transactionsLT500?.length === 0 ? (
           <p className="my-10 font-semibold text-center">لا يوجد ارباح هنا</p>
         ) : (
-          <SalesTable data={marketData?.transactions} haveGeneration={true} />
+          <SalesTable data={marketData?.transactionsLT500} haveGeneration={true} />
         )}
       </div>
+          
+      
     </div>
   );
 };
