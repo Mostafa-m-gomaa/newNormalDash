@@ -126,13 +126,19 @@ const [type, setType] = useState("")
     if (expirationTime) {
       data.append("expirationTime", expirationTime);
     }
-    if(selectedTele.length !== 0){
+  
+   
 
-       
+    if(selectedTele.length !== 0){
       selectedTele.forEach(courseId => {
         data.append("telegramChannelNames", courseId);
       });
+   
     }
+    else{
+      data.append("telegramChannelNames", selectedTele);
+    }
+ 
     if(selectedCourses.length !== 0){
      
       selectedCourses.forEach(courseId => {
@@ -149,6 +155,7 @@ const [type, setType] = useState("")
     })
       .then((res) => res.json())
       .then((data) => {
+        console.log(data);
         if (data?.errors) {
           setErr(data.errors[0].msg);
         }
