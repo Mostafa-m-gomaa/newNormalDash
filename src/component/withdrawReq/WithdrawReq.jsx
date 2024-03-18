@@ -7,7 +7,7 @@ function AllMarketingRequests() {
   const { route, setOnload } = useContext(AppContext);
   const [requests, setRequests] = useState([]);
   const [isPop, setIsPop] = useState(false);
-  const [actionId, setActionId] = useState("");
+  const [actionId, setActionId] = useState({});
   const [action, setAction] = useState("");
   const [refresh, setRefresh] = useState(0);
 
@@ -17,7 +17,7 @@ function AllMarketingRequests() {
   useEffect(() => {
     setOnload(true);
 
-    fetch(`${route}/withdrawReq?page=${currentPage}`, {
+    fetch(`${route}/withdrawReq`, {
       method: "GET",
       headers: {
        
@@ -28,7 +28,7 @@ function AllMarketingRequests() {
       .then((data) => {
         console.log(data);
         setRequests(data.data);
-        setPagesNumber(data.paginationResult.numberOfPages);
+  
       })
       .finally(() => {
         setOnload(false);
@@ -83,8 +83,8 @@ function AllMarketingRequests() {
         <tbody>
           {requests?.map((request) => (
             <tr key={request._id}>
-              <td>{request.marketer.name}</td>
-              <td>{request.marketer.email}</td>
+              <td>{request.marketer === null ? "لايوجد": request.marketer.name  }</td>
+              <td>{request.marketer === null ? "لايوجد" : request.marketer.email}</td>
               <td>{request.role}</td>
               <td>
                 <div

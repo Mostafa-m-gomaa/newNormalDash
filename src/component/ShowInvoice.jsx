@@ -9,6 +9,7 @@ const ShowInvoice = ({ data }) => {
   const [paying, setPaying] = useState(false);
   const handelAction = function () {
     setOnload(true);
+ 
     fetch(`${route}/withdrawReq/payToMarketer/${data?._id}`, {
       method: "PUT",
       headers: {
@@ -19,7 +20,13 @@ const ShowInvoice = ({ data }) => {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-        toast.success("Payment done!");
+        if(data.errors){
+          toast.error("Error");
+        }
+        else{
+
+          toast.success("Payment done!");
+        }
       })
       .catch((err) => console.log(err))
       .finally(() => {
@@ -38,41 +45,28 @@ const ShowInvoice = ({ data }) => {
         borderRadius: "10px",
       }}
     >
-      <div>
-        <span>اجمالي مبلغ المبيعات</span>: <span>{data?.totalSalesMoney}</span>
-      </div>
-      <div>
-        <span>المبيعات المباشره</span>: <span>{data?.mySales}</span>
-      </div>
-      <div>
-        <span>مبيعات المكتسبة</span>: <span>{data?.customerSales}</span>
-      </div>
-      <div>
-        <span>الارباح من العملاء</span>: <span>{data?.customers_profits}</span>
-      </div>
-      <div>
-        <span>النسبة</span>
-        <span>{data?.percentage}</span>
-      </div>
-      <div>
-        <span>أرباحي</span>
-        <span>{data?.direct_profits}</span>
-      </div>
-      <div>
-        <span>ارباح الشجره</span>
-        <span>{data?.tree_profits}</span>
-      </div>
-      <div>
-        <span>الارباح الكلية</span>
-        <span> {data?.tree_profits + data?.direct_profits}</span>
-      </div>
-
-      <div>
-        <span>طريقة الاستلام</span> : <span>{data?.paymentMethod}</span>
-      </div>
-      <div>
-        <span>حساب الاستلام</span> : <span>{data?.recieverAcc}</span>
-      </div>
+      
+      
+        <h4>
+        اجمالي المبيعات فوق 500 <span>${data?.totalSalesMoneyGT500}</span>
+        </h4>{" "}
+        <h4>
+        اجمالي مبيعات تحت 500 <span>{data?.totalSalesMoneyLT500}</span>
+        </h4>{" "}
+        <h4>
+        نسبة الربح فوق 500 : <span>{data?.percentageGT500}</span>
+        </h4>{" "}
+        <h4>
+        نسبة الربح تحت 500: <span>${data?.percentageLT500}</span>
+        </h4>{" "}
+        <h4>
+        اجمالي الربح فوق 500: <span>%{data?.profitsGT500}</span>
+        </h4>
+        <h4>
+        اجمالي الربح تحت 500: <span>${data?.profitsLT500}</span>
+        </h4>
+      
+      
       <div>
         <span>حاله الطلب </span> : <span>{data?.status}</span>
       </div>
